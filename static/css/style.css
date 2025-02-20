@@ -1,0 +1,497 @@
+/* Modern styling */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f5f5f5;
+}
+
+.navbar {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.books-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+.book-card {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+}
+
+.book-card img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.plan-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+    padding: 2rem;
+    margin: 1rem 0;
+}
+
+.plan-card:hover {
+    transform: scale(1.02);
+}
+
+.price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #007bff;
+    margin: 1rem 0;
+}
+
+.features-list {
+    list-style: none;
+    padding: 0;
+    margin: 1.5rem 0;
+}
+
+.features-list li {
+    padding: 0.5rem 0;
+    color: #666;
+}
+
+/* Profile Dropdown Styling */
+.dropdown-menu {
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.dropdown-item {
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+}
+
+.dropdown-item i {
+    width: 20px;
+    text-align: center;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: #dc354520;
+}
+
+.dropdown-divider {
+    margin: 0.5rem 0;
+}
+
+.nav-link i {
+    font-size: 1.1rem;
+}
+
+/* Updated dropdown menu styling */
+.dropdown-menu {
+    animation: slideIn 0.3s ease;
+    transform-origin: top right;
+    margin-top: 0.5rem !important;
+    border: none;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Optional: Add hover effect to dropdown items */
+.dropdown-item {
+    transition: all 0.2s ease;
+    padding: 0.5rem 1.5rem;
+}
+
+.dropdown-item:hover {
+    background-color: #f8f9fa;
+    transform: translateX(5px);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .books-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+/* Navigation menu slide from right */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 250px;
+        height: 100vh;
+        padding: 2rem 1rem;
+        background-color: #343a40;
+        z-index: 1000;
+        transform: translateX(100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .navbar-collapse.show {
+        transform: translateX(0);
+    }
+
+    .navbar-nav {
+        margin-top: 2rem;
+    }
+
+    .nav-item {
+        margin: 1rem 0;
+    }
+
+    /* Add overlay when menu is open */
+    .navbar-collapse::before {
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: -1;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+        pointer-events: none;
+    }
+
+    .navbar-collapse.show::before {
+        opacity: 1;
+        pointer-events: auto;
+    }
+
+    /* Close button for mobile menu */
+    .navbar-toggler {
+        position: relative;
+        z-index: 1001;
+    }
+}
+
+/* Profile page styling */
+.profile-container .card {
+    border: none;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    border-radius: 12px;
+}
+
+.profile-container .card-header {
+    background-color: transparent;
+    border-bottom: 1px solid #eee;
+    padding: 1.5rem;
+}
+
+.profile-container .card-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #333;
+}
+
+.profile-container .card-body {
+    padding: 1.5rem;
+}
+
+.profile-info label {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.profile-info p {
+    margin-bottom: 1.5rem;
+}
+
+.current-plan-info {
+    text-align: center;
+}
+
+.plan-features ul li {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.plan-actions {
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+.form-control {
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+}
+
+.form-control:focus {
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+.badge {
+    padding: 0.5em 1em;
+    border-radius: 20px;
+}
+
+/* Animation for edit mode transition */
+#profileView, #profileEdit {
+    transition: all 0.3s ease;
+}
+
+/* Plan features list styling */
+.plan-features ul li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.plan-features ul li i {
+    min-width: 20px;
+}
+
+/* Category Chips */
+.category-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.category-chip {
+    padding: 0.5rem 1.5rem;
+    background: white;
+    border-radius: 25px;
+    text-decoration: none;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.category-chip:hover {
+    background: #007bff;
+    color: white;
+    transform: translateY(-2px);
+}
+
+/* Section Titles */
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 1rem;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 4px;
+    background: #007bff;
+    border-radius: 2px;
+}
+
+/* Book Cards Enhancements */
+.book-card {
+    position: relative;
+}
+
+.book-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #ff4757;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    z-index: 1;
+}
+
+.book-badge.new {
+    background: #2ed573;
+}
+
+.book-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+}
+
+.rating {
+    color: #ffa502;
+}
+
+/* Authors Carousel */
+.authors-carousel {
+    display: flex;
+    gap: 1.5rem;
+    overflow-x: auto;
+    padding: 1rem 0;
+    scrollbar-width: none;
+}
+
+.author-card {
+    min-width: 150px;
+    text-align: center;
+}
+
+.author-image {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    margin-bottom: 0.5rem;
+    object-fit: cover;
+}
+
+/* Search Box */
+.search-box {
+    position: relative;
+}
+
+.search-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+}
+
+/* Advanced Filters */
+#advancedFilters {
+    transition: all 0.3s ease;
+}
+
+#advancedFilters .card {
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .category-chips {
+        gap: 0.5rem;
+    }
+    
+    .category-chip {
+        padding: 0.4rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .authors-carousel {
+        gap: 1rem;
+    }
+}
+
+/* Filter Dropdown Styling */
+.filter-dropdown .dropdown-menu {
+    width: 300px;
+    border: none;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    margin-top: 0.5rem !important;
+    animation: slideIn 0.3s ease;
+}
+
+.filter-dropdown .dropdown-toggle {
+    border-radius: 8px;
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.filter-dropdown .form-label {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 0.3rem;
+}
+
+.filter-dropdown .form-select {
+    font-size: 0.9rem;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.filter-dropdown .form-select:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.15);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .filter-dropdown .dropdown-menu {
+        width: 100%;
+        position: fixed;
+        top: auto;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: 0 !important;
+        border-radius: 12px 12px 0 0;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    .filter-dropdown .dropdown-menu.show {
+        animation: slideUp 0.3s ease;
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(100%);
+        }
+        to {
+            transform: translateY(0);
+        }
+    }
+}
+
+/* Logout styling */
+.dropdown-item.text-danger {
+    color: #dc3545 !important;
+}
+
+.dropdown-item.text-danger:hover {
+    background-color: #dc354520;
+}
+
+.dropdown-divider {
+    margin: 0.5rem 0;
+    border-color: #dee2e6;
+}
