@@ -100,12 +100,17 @@
                                     <td>{{ book.genre }}</td>
                                     <td>{{ book.added_date }}</td>
                                     <td>
-                                        <button class="btn btn-sm btn-info me-1" onclick="editBook('{{ book.id }}')">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button class="btn btn-sm btn-danger" onclick="deleteBook('{{ book.id }}')">
-                                            <i class="fas fa-trash"></i>
-                                        </button>
+                                        <div class="btn-group">
+                                            <button class="btn btn-sm btn-info me-1" title="Edit">
+                                                <i class="fas fa-edit"></i>
+                                            </button>
+                                            <a href="{{ url_for('delete_book', book_id=book.id) }}" 
+                                               class="btn btn-sm btn-danger" 
+                                               onclick="return confirm('Are you sure you want to delete {{ book.title }}?')"
+                                               title="Delete">
+                                                <i class="fas fa-trash"></i>
+                                            </a>
+                                        </div>
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -190,5 +195,159 @@
         </div>
     </div>
 </div>
+
+<!-- Add this modal for delete confirmation -->
+<div class="modal fade" id="deleteConfirmModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete "<span id="bookTitle"></span>"?</p>
+                <p class="text-danger">This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="#" id="confirmDeleteBtn" class="btn btn-danger">Delete Book</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add this JavaScript at the bottom of your admin_dashboard.html -->
+<script>
+function confirmDelete(bookId, bookTitle) {
+    // Set the book title in the modal
+    document.getElementById('bookTitle').textContent = bookTitle;
+    
+    // Update the delete button's href
+    document.getElementById('confirmDeleteBtn').href = '/delete_book/' + bookId;
+    
+    // Show the modal
+    var deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    deleteModal.show();
+}
+
+// Add success message fade-out
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all flash messages
+    var flashMessages = document.querySelectorAll('.alert');
+    
+    // Set timeout to fade out flash messages
+    flashMessages.forEach(function(message) {
+        setTimeout(function() {
+            message.style.transition = 'opacity 0.5s ease';
+            message.style.opacity = '0';
+            setTimeout(function() {
+                message.remove();
+            }, 500);
+        }, 3000);
+    });
+});
+</script>
+
+<!-- Add these styles -->
+<style>
+.table {
+    vertical-align: middle;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    border-radius: 0.2rem;
+}
+
+.btn-danger {
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    transform: scale(1.05);
+}
+
+.modal-content {
+    border-radius: 0.5rem;
+}
+
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    border-top-left-radius: 0.5rem;
+    border-top-right-radius: 0.5rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    border-bottom-left-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
+}
+
+/* Flash message styling */
+.alert {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    min-width: 250px;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+/* Add these styles for better button appearance */
+.btn-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.table td {
+    vertical-align: middle;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+</style>
 
 {% endblock %}

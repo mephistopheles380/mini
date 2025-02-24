@@ -6,47 +6,129 @@
         <!-- Profile Details Section -->
         <div class="col-md-8 mb-4">
             <div class="card">
-                <div class="card-header">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h3 class="mb-0">Profile Details</h3>
+                    <button class="btn btn-primary btn-sm" onclick="toggleEditMode()">
+                        <i class="fas fa-edit me-1"></i>Edit Profile
+                    </button>
                 </div>
                 <div class="card-body">
                     <!-- Profile View Mode -->
                     <div id="profileView" class="{% if edit_mode %}d-none{% endif %}">
                         <div class="profile-info">
-                            <div class="mb-3">
-                                <label class="text-muted">Name</label>
-                                <p class="h5">{{ user_data.name }}</p>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="text-muted">Name</label>
+                                    <p class="h5">{{ user_data.name }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="text-muted">Email</label>
+                                    <p class="h5">{{ user_data.email }}</p>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="text-muted">Email</label>
-                                <p class="h5">{{ user_data.email }}</p>
+                            
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="text-muted">College</label>
+                                    <p class="h5">{{ user_data.college }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="text-muted">Department</label>
+                                    <p class="h5">{{ user_data.department }}</p>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="text-muted">Member Since</label>
-                                <p class="h5">{{ user_data.joined_date }}</p>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="text-muted">Year</label>
+                                    <p class="h5">{{ user_data.year }}</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="text-muted">Semester</label>
+                                    <p class="h5">{{ user_data.semester }}</p>
+                                </div>
                             </div>
-                            <button class="btn btn-primary" onclick="toggleEditMode()">Edit Profile</button>
+
+                            <div class="row mb-3">
+                                <div class="col-12">
+                                    <label class="text-muted">Member Since</label>
+                                    <p class="h5">{{ user_data.joined_date }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
                     <!-- Profile Edit Mode -->
                     <div id="profileEdit" class="{% if not edit_mode %}d-none{% endif %}">
                         <form action="{{ url_for('update_profile') }}" method="POST">
-                            <div class="mb-3">
-                                <label class="form-label">Name</label>
-                                <input type="text" class="form-control" name="name" value="{{ user_data.name }}" required>
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Name</label>
+                                    <input type="text" class="form-control" name="name" value="{{ user_data.name }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Email</label>
+                                    <input type="email" class="form-control" name="email" value="{{ user_data.email }}" required>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <label class="form-label">Email</label>
-                                <input type="email" class="form-control" name="email" value="{{ user_data.email }}" required>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">College</label>
+                                    <input type="text" class="form-control" name="college" value="{{ user_data.college }}" required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Department</label>
+                                    <select class="form-select" name="department" required>
+                                        <option value="">Select Department</option>
+                                        <option value="Computer Science" {% if user_data.department == 'Computer Science' %}selected{% endif %}>Computer Science</option>
+                                        <option value="Information Technology" {% if user_data.department == 'Information Technology' %}selected{% endif %}>Information Technology</option>
+                                        <option value="Electronics" {% if user_data.department == 'Electronics' %}selected{% endif %}>Electronics</option>
+                                        <option value="Mechanical" {% if user_data.department == 'Mechanical' %}selected{% endif %}>Mechanical</option>
+                                        <option value="Civil" {% if user_data.department == 'Civil' %}selected{% endif %}>Civil</option>
+                                    </select>
+                                </div>
                             </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Year</label>
+                                    <select class="form-select" name="year" required>
+                                        <option value="">Select Year</option>
+                                        <option value="1" {% if user_data.year == '1' %}selected{% endif %}>First Year</option>
+                                        <option value="2" {% if user_data.year == '2' %}selected{% endif %}>Second Year</option>
+                                        <option value="3" {% if user_data.year == '3' %}selected{% endif %}>Third Year</option>
+                                        <option value="4" {% if user_data.year == '4' %}selected{% endif %}>Fourth Year</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Semester</label>
+                                    <select class="form-select" name="semester" required>
+                                        <option value="">Select Semester</option>
+                                        <option value="1" {% if user_data.semester == '1' %}selected{% endif %}>Semester 1</option>
+                                        <option value="2" {% if user_data.semester == '2' %}selected{% endif %}>Semester 2</option>
+                                        <option value="3" {% if user_data.semester == '3' %}selected{% endif %}>Semester 3</option>
+                                        <option value="4" {% if user_data.semester == '4' %}selected{% endif %}>Semester 4</option>
+                                        <option value="5" {% if user_data.semester == '5' %}selected{% endif %}>Semester 5</option>
+                                        <option value="6" {% if user_data.semester == '6' %}selected{% endif %}>Semester 6</option>
+                                        <option value="7" {% if user_data.semester == '7' %}selected{% endif %}>Semester 7</option>
+                                        <option value="8" {% if user_data.semester == '8' %}selected{% endif %}>Semester 8</option>
+                                    </select>
+                                </div>
+                            </div>
+
                             <div class="mb-3">
                                 <label class="form-label">New Password (leave blank to keep current)</label>
                                 <input type="password" class="form-control" name="password">
                             </div>
+
                             <div class="d-flex gap-2">
-                                <button type="submit" class="btn btn-success">Save Changes</button>
-                                <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">Cancel</button>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save me-1"></i>Save Changes
+                                </button>
+                                <button type="button" class="btn btn-secondary" onclick="toggleEditMode()">
+                                    <i class="fas fa-times me-1"></i>Cancel
+                                </button>
                             </div>
                         </form>
                     </div>
@@ -85,6 +167,41 @@
         </div>
     </div>
 </div>
+
+<style>
+.profile-container {
+    padding: 2rem 0;
+}
+
+.card {
+    border-radius: 1rem;
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(0,0,0,0.125);
+    padding: 1.5rem;
+}
+
+.profile-info label {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
+}
+
+.profile-info p {
+    margin-bottom: 0;
+}
+
+.form-control, .form-select {
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
+}
+
+.btn {
+    border-radius: 0.5rem;
+}
+</style>
 
 <script>
 function toggleEditMode() {

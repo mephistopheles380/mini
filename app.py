@@ -34,35 +34,38 @@ admin_db = {
 
 # Subscription plans data
 subscription_plans = {
-    'monthly': {
-        'name': 'Monthly',
-        'price': 199,
+    'free': {
+        'name': 'Free Resources',
+        'price': 0,
         'features': [
-            'Access to all eBooks',
-            'Read online & offline',
-            'Monthly new releases',
-            'Basic support'
+            'Access to textbooks',
+            'Access to guiding books',
+            'Access to dictionaries',
+            'Access to magazines',
+            'Basic download limit'
         ]
     },
-    'quarterly': {
-        'name': 'Quarterly',
+    'monthly': {
+        'name': 'Premium Monthly',
+        'price': 49,
+        'features': [
+            'All Free Resources',
+            'Module-wise notes',
+            'Download study materials',
+            'Access to novels',
+            'Complete syllabus access',
+            'Unlimited downloads'
+        ]
+    },
+    'yearly': {
+        'name': 'Premium Yearly',
         'price': 499,
         'features': [
-            'All Monthly features',
-            'Priority access to new releases',
-            'Premium support',
-            'Exclusive author interviews'
-        ]
-    },
-    'annual': {
-        'name': 'Annual',
-        'price': 1499,
-        'features': [
-            'All Quarterly features',
-            'Free audiobooks',
-            '24/7 Premium support',
-            'Early access to pre-releases',
-            'Virtual book club membership'
+            'All Monthly Features',
+            'Priority access to new resources',
+            '2 months free',
+            'Offline reading',
+            'Premium support'
         ]
     }
 }
