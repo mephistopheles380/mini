@@ -8,8 +8,151 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key'
 
 # Initialize empty lists for books and activities
-books = []
-recent_activities = []
+books = [
+    {
+        'id': '1',
+        'title': 'Python Programming',
+        'author': 'John Smith',
+        'genre': 'Programming',
+        'description': 'A comprehensive guide to Python programming language',
+        'cover_image': 'covers/python_programming.jpg',
+        'book_file': 'books/python_programming.pdf',
+        'added_date': '2024-01-15',
+        'reads': 150,
+        'rating': 4.5
+    },
+    {
+        'id': '2',
+        'title': 'Data Structures and Algorithms',
+        'author': 'Sarah Johnson',
+        'genre': 'Computer Science',
+        'description': 'Essential concepts of DSA with practical examples',
+        'cover_image': 'covers/dsa.jpg',
+        'book_file': 'books/dsa.pdf',
+        'added_date': '2024-01-20',
+        'reads': 120,
+        'rating': 4.8
+    },
+    {
+        'id': '3',
+        'title': 'Web Development Basics',
+        'author': 'Michael Brown',
+        'genre': 'Web Development',
+        'description': 'Introduction to HTML, CSS, and JavaScript',
+        'cover_image': 'covers/web_dev.jpg',
+        'book_file': 'books/web_dev.pdf',
+        'added_date': '2024-02-01',
+        'reads': 200,
+        'rating': 4.3
+    },
+    {
+        'id': '4',
+        'title': 'Database Management Systems',
+        'author': 'Emily Davis',
+        'genre': 'Database',
+        'description': 'Complete guide to modern database systems',
+        'cover_image': 'covers/dbms.jpg',
+        'book_file': 'books/dbms.pdf',
+        'added_date': '2024-02-10',
+        'reads': 90,
+        'rating': 4.6
+    },
+    {
+        'id': '5',
+        'title': 'Machine Learning Fundamentals',
+        'author': 'David Wilson',
+        'genre': 'Artificial Intelligence',
+        'description': 'Basic concepts and applications of ML',
+        'cover_image': 'covers/ml.jpg',
+        'book_file': 'books/ml.pdf',
+        'added_date': '2024-02-15',
+        'reads': 180,
+        'rating': 4.7
+    },
+    {
+        'id': '6',
+        'title': 'Operating Systems',
+        'author': 'Robert Taylor',
+        'genre': 'Computer Science',
+        'description': 'Understanding modern operating systems',
+        'cover_image': 'covers/os.jpg',
+        'book_file': 'books/os.pdf',
+        'added_date': '2024-02-20',
+        'reads': 110,
+        'rating': 4.4
+    },
+    {
+        'id': '7',
+        'title': 'Software Engineering Principles',
+        'author': 'Lisa Anderson',
+        'genre': 'Software Engineering',
+        'description': 'Best practices in software development',
+        'cover_image': 'covers/se.jpg',
+        'book_file': 'books/se.pdf',
+        'added_date': '2024-02-25',
+        'reads': 85,
+        'rating': 4.2
+    },
+    {
+        'id': '8',
+        'title': 'Computer Networks',
+        'author': 'James Miller',
+        'genre': 'Networking',
+        'description': 'Understanding computer networking concepts',
+        'cover_image': 'covers/networks.jpg',
+        'book_file': 'books/networks.pdf',
+        'added_date': '2024-03-01',
+        'reads': 95,
+        'rating': 4.5
+    },
+    {
+        'id': '9',
+        'title': 'Cybersecurity Basics',
+        'author': 'Alex Turner',
+        'genre': 'Security',
+        'description': 'Introduction to cybersecurity concepts',
+        'cover_image': 'covers/security.jpg',
+        'book_file': 'books/security.pdf',
+        'added_date': '2024-03-05',
+        'reads': 130,
+        'rating': 4.6
+    },
+    {
+        'id': '10',
+        'title': 'Cloud Computing',
+        'author': 'Rachel Green',
+        'genre': 'Cloud Technology',
+        'description': 'Modern cloud computing technologies',
+        'cover_image': 'covers/cloud.jpg',
+        'book_file': 'books/cloud.pdf',
+        'added_date': '2024-03-10',
+        'reads': 140,
+        'rating': 4.4
+    }
+]
+
+recent_activities = [
+    {
+        'time': '2 mins ago',
+        'description': 'Added new book: Cloud Computing'
+    },
+    {
+        'time': '10 mins ago',
+        'description': 'Updated book: Python Programming'
+    },
+    {
+        'time': '1 hour ago',
+        'description': 'New user registered'
+    },
+    {
+        'time': '2 hours ago',
+        'description': 'Added new book: Cybersecurity Basics'
+    },
+    {
+        'time': '1 day ago',
+        'description': 'Book "Machine Learning Fundamentals" viewed 50 times'
+    }
+]
 
 # Sample in-memory database with complete user information
 users_db = {
@@ -20,7 +163,24 @@ users_db = {
         'role': 'user',
         'membership': 'monthly',
         'joined_date': '2024-01-01',
-        'next_billing_date': (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d')
+        'next_billing_date': (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d'),
+        'college': 'Sample College',
+        'department': 'Computer Science',
+        'year': '2',
+        'semester': '4'
+    },
+    'user2@example.com': {  # Added second user
+        'password': 'userpass456',
+        'name': 'Jane Smith',
+        'email': 'user2@example.com',
+        'role': 'user',
+        'membership': 'free',
+        'joined_date': '2024-02-01',
+        'next_billing_date': (datetime.now() + timedelta(days=30)).strftime('%Y-%m-%d'),
+        'college': 'Tech University',
+        'department': 'Information Technology',
+        'year': '3',
+        'semester': '5'
     }
 }
 
@@ -128,7 +288,9 @@ def login_post():
 
 @app.route('/logout')
 def logout():
+    # Clear the session
     session.clear()
+    flash('You have been logged out successfully', 'success')
     return redirect(url_for('login'))
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -192,7 +354,11 @@ def calculate_revenue():
 @app.route('/profile')
 @login_required
 def profile():
-    user_email = session['user']
+    user_email = session.get('user')
+    if user_email not in users_db:
+        flash('User not found', 'error')
+        return redirect(url_for('logout'))
+    
     user_data = users_db[user_email]
     return render_template('profile.html', 
                          user_data=user_data, 
@@ -322,6 +488,37 @@ def subscription():
     return render_template('subscription.html', 
                          user_data=user_data,
                          subscription_plans=subscription_plans)
+
+@app.route('/search')
+def search():
+    query = request.args.get('q', '')
+    sort = request.args.get('sort', 'title')
+    
+    # Filter books based on search query
+    filtered_books = [
+        book for book in books 
+        if query.lower() in book['title'].lower() or 
+           query.lower() in book['author'].lower() or 
+           query.lower() in book['genre'].lower()
+    ]
+    
+    # Sort books based on sort parameter
+    if sort == 'title':
+        filtered_books.sort(key=lambda x: x['title'])
+    elif sort == 'author':
+        filtered_books.sort(key=lambda x: x['author'])
+    elif sort == 'popularity':
+        filtered_books.sort(key=lambda x: x['reads'], reverse=True)
+    elif sort == 'rating':
+        filtered_books.sort(key=lambda x: x['rating'], reverse=True)
+    
+    # Get unique genres for filter sidebar
+    genres = sorted(set(book['genre'] for book in books))
+    
+    return render_template('search_results.html', 
+                         books=filtered_books,
+                         genres=genres,
+                         query=query)
 
 if __name__ == '__main__':
     app.run(debug=True)

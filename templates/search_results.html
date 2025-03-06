@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <!-- Left Sidebar Filters -->
+        <div class="col-md-3">
+            <div class="filter-sidebar">
+                <h4>RATINGS</h4>
+                <div class="ratings-filter mb-4">
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="rating5">
+                        <label class="form-check-label">
+                            <span class="stars">★★★★★</span>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="rating4">
+                        <label class="form-check-label">
+                            <span class="stars">★★★★☆</span>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="rating3">
+                        <label class="form-check-label">
+                            <span class="stars">★★★☆☆</span>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="rating2">
+                        <label class="form-check-label">
+                            <span class="stars">★★☆☆☆</span>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="rating1">
+                        <label class="form-check-label">
+                            <span class="stars">★☆☆☆☆</span>
+                        </label>
+                    </div>
+                </div>
+
+                <h4>LANGUAGE</h4>
+                <div class="language-filter mb-4">
+                    <select class="form-select">
+                        <option value="">- Any -</option>
+                        <option value="en">English</option>
+                        <option value="es">Spanish</option>
+                        <option value="fr">French</option>
+                    </select>
+                </div>
+
+                <h4>GENRE</h4>
+                <div class="genre-filter">
+                    {% for genre in genres %}
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" id="genre{{ loop.index }}">
+                        <label class="form-check-label">{{ genre }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="col-md-9">
+            <div class="search-header mb-4">
+                <h2>Search Results</h2>
+                <div class="sort-options">
+                    sort by: 
+                    <a href="?sort=title" class="sort-link">title</a> |
+                    <a href="?sort=author" class="sort-link">author</a> |
+                    <a href="?sort=popularity" class="sort-link">popularity</a> |
+                    <a href="?sort=rating" class="sort-link">rating</a>
+                </div>
+            </div>
+
+            <div class="row" id="searchResults">
+                {% for book in books %}
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100">
+                        <img src="{{ url_for('static', filename=book.cover_image) }}" class="card-img-top" alt="{{ book.title }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <p class="card-text">{{ book.author }}</p>
+                            <span class="badge bg-primary">{{ book.genre }}</span>
+                            <div class="rating">
+                                <span class="stars">★</span> {{ book.rating }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            {% if not books %}
+            <div class="no-results text-center py-5">
+                <h3>No results found</h3>
+                <p>Try adjusting your search criteria</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<style>
+.filter-sidebar {
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.filter-sidebar h4 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.stars {
+    color: #ffc107;
+    letter-spacing: 2px;
+}
+
+.sort-options {
+    color: #666;
+}
+
+.sort-link {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.sort-link:hover {
+    text-decoration: underline;
+}
+
+.card {
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-img-top {
+    height: 250px;
+    object-fit: cover;
+}
+
+.form-check {
+    margin-bottom: 10px;
+}
+
+.search-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+</style>
+{% endblock %} 

@@ -74,27 +74,61 @@
         <!-- Book Management -->
         <div class="col-xl-8 col-lg-7">
             <div class="card shadow mb-4">
-                <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                    <h6 class="m-0 font-weight-bold text-primary">Book Management</h6>
-                    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBookModal">
-                        <i class="fas fa-plus me-1"></i> Add New Book
-                    </button>
+                <div class="card-header py-3">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <h6 class="m-0 font-weight-bold text-primary">Book Management</h6>
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#addBookModal">
+                            <i class="fas fa-plus me-1"></i> Add New Book
+                        </button>
+                    </div>
+                    <!-- Search and Filter Section -->
+                    <div class="mt-3">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <div class="input-group">
+                                    <input type="text" id="searchInput" class="form-control" placeholder="Search books...">
+                                    <button class="btn btn-outline-secondary" type="button" onclick="clearSearch()">
+                                        <i class="fas fa-times"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="d-flex gap-2">
+                                    <select id="genreFilter" class="form-select">
+                                        <option value="">All Genres</option>
+                                        <option value="Programming">Programming</option>
+                                        <option value="Computer Science">Computer Science</option>
+                                        <option value="Web Development">Web Development</option>
+                                        <option value="Database">Database</option>
+                                        <option value="Artificial Intelligence">Artificial Intelligence</option>
+                                        <option value="Software Engineering">Software Engineering</option>
+                                        <option value="Networking">Networking</option>
+                                        <option value="Security">Security</option>
+                                        <option value="Cloud Technology">Cloud Technology</option>
+                                    </select>
+                                    <button class="btn btn-outline-secondary" onclick="clearFilters()">
+                                        <i class="fas fa-filter-circle-xmark"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th>Title</th>
-                                    <th>Author</th>
-                                    <th>Genre</th>
-                                    <th>Added Date</th>
+                                    <th onclick="sortTable(0)" class="sortable">Title <i class="fas fa-sort"></i></th>
+                                    <th onclick="sortTable(1)" class="sortable">Author <i class="fas fa-sort"></i></th>
+                                    <th onclick="sortTable(2)" class="sortable">Genre <i class="fas fa-sort"></i></th>
+                                    <th onclick="sortTable(3)" class="sortable">Added Date <i class="fas fa-sort"></i></th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
-                            <tbody>
+                            <tbody id="bookTableBody">
                                 {% for book in books %}
-                                <tr>
+                                <tr class="book-row">
                                     <td>{{ book.title }}</td>
                                     <td>{{ book.author }}</td>
                                     <td>{{ book.genre }}</td>
@@ -116,6 +150,10 @@
                                 {% endfor %}
                             </tbody>
                         </table>
+                        <!-- No results message -->
+                        <div id="noResults" class="text-center py-3 d-none">
+                            <p class="text-muted">No books found matching your criteria.</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -215,38 +253,6 @@
         </div>
     </div>
 </div>
-
-<!-- Add this JavaScript at the bottom of your admin_dashboard.html -->
-<script>
-function confirmDelete(bookId, bookTitle) {
-    // Set the book title in the modal
-    document.getElementById('bookTitle').textContent = bookTitle;
-    
-    // Update the delete button's href
-    document.getElementById('confirmDeleteBtn').href = '/delete_book/' + bookId;
-    
-    // Show the modal
-    var deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
-    deleteModal.show();
-}
-
-// Add success message fade-out
-document.addEventListener('DOMContentLoaded', function() {
-    // Get all flash messages
-    var flashMessages = document.querySelectorAll('.alert');
-    
-    // Set timeout to fade out flash messages
-    flashMessages.forEach(function(message) {
-        setTimeout(function() {
-            message.style.transition = 'opacity 0.5s ease';
-            message.style.opacity = '0';
-            setTimeout(function() {
-                message.remove();
-            }, 500);
-        }, 3000);
-    });
-});
-</script>
 
 <!-- Add these styles -->
 <style>
@@ -348,6 +354,210 @@ document.addEventListener('DOMContentLoaded', function() {
     background-color: #138496;
     border-color: #117a8b;
 }
+
+/* Add these new styles */
+.input-group {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+#searchInput {
+    border-right: none;
+    padding: 0.75rem 1rem;
+}
+
+#searchInput:focus {
+    box-shadow: none;
+    border-color: #ced4da;
+}
+
+.input-group .btn-outline-secondary {
+    border-left: none;
+    background-color: white;
+}
+
+.input-group .btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+}
+
+.book-row.hidden {
+    display: none;
+}
+
+#noResults {
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+    padding: 2rem;
+}
+
+.sortable {
+    cursor: pointer;
+    user-select: none;
+}
+
+.sortable:hover {
+    background-color: #f8f9fa;
+}
+
+.sortable i {
+    margin-left: 5px;
+    color: #adb5bd;
+}
+
+.sortable.active i {
+    color: #0d6efd;
+}
+
+.form-select {
+    padding: 0.75rem 2.25rem 0.75rem 1rem;
+}
 </style>
+
+<script>
+function confirmDelete(bookId, bookTitle) {
+    // Set the book title in the modal
+    document.getElementById('bookTitle').textContent = bookTitle;
+    
+    // Update the delete button's href
+    document.getElementById('confirmDeleteBtn').href = '/delete_book/' + bookId;
+    
+    // Show the modal
+    var deleteModal = new bootstrap.Modal(document.getElementById('deleteConfirmModal'));
+    deleteModal.show();
+}
+
+// Add success message fade-out
+document.addEventListener('DOMContentLoaded', function() {
+    // Get all flash messages
+    var flashMessages = document.querySelectorAll('.alert');
+    
+    // Set timeout to fade out flash messages
+    flashMessages.forEach(function(message) {
+        setTimeout(function() {
+            message.style.transition = 'opacity 0.5s ease';
+            message.style.opacity = '0';
+            setTimeout(function() {
+                message.remove();
+            }, 500);
+        }, 3000);
+    });
+});
+
+// Add the search functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const genreFilter = document.getElementById('genreFilter');
+    const bookRows = document.querySelectorAll('.book-row');
+    const noResults = document.getElementById('noResults');
+
+    function filterBooks() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        const selectedGenre = genreFilter.value;
+        let visibleCount = 0;
+
+        bookRows.forEach(row => {
+            const title = row.querySelector('td:nth-child(1)').textContent.toLowerCase();
+            const author = row.querySelector('td:nth-child(2)').textContent.toLowerCase();
+            const genre = row.querySelector('td:nth-child(3)').textContent;
+
+            const matchesSearch = 
+                searchTerm === '' || 
+                title.includes(searchTerm) || 
+                author.includes(searchTerm) || 
+                genre.toLowerCase().includes(searchTerm);
+            
+            const matchesGenre = selectedGenre === '' || genre === selectedGenre;
+
+            if (matchesSearch && matchesGenre) {
+                row.style.display = '';
+                visibleCount++;
+            } else {
+                row.style.display = 'none';
+            }
+        });
+
+        // Show/hide no results message
+        if (visibleCount === 0) {
+            noResults.style.display = 'block';
+        } else {
+            noResults.style.display = 'none';
+        }
+    }
+
+    // Add event listeners
+    if (searchInput) {
+        searchInput.addEventListener('input', filterBooks);
+    }
+    if (genreFilter) {
+        genreFilter.addEventListener('change', filterBooks);
+    }
+});
+
+// Clear search function
+function clearSearch() {
+    const searchInput = document.getElementById('searchInput');
+    if (searchInput) {
+        searchInput.value = '';
+        searchInput.dispatchEvent(new Event('input'));
+    }
+}
+
+// Clear filter function
+function clearFilters() {
+    const genreFilter = document.getElementById('genreFilter');
+    if (genreFilter) {
+        genreFilter.value = '';
+        genreFilter.dispatchEvent(new Event('change'));
+    }
+}
+
+// Table sorting functionality
+let currentSortColumn = -1;
+let sortAscending = true;
+
+function sortTable(columnIndex) {
+    const table = document.getElementById('bookTableBody');
+    if (!table) return;
+
+    const rows = Array.from(table.getElementsByTagName('tr'));
+    const headers = document.querySelectorAll('th.sortable');
+
+    // Update sort direction
+    if (currentSortColumn === columnIndex) {
+        sortAscending = !sortAscending;
+    } else {
+        sortAscending = true;
+    }
+    currentSortColumn = columnIndex;
+
+    // Update header classes
+    headers.forEach(header => header.classList.remove('active'));
+    headers[columnIndex].classList.add('active');
+
+    // Sort rows
+    rows.sort((a, b) => {
+        const aValue = a.children[columnIndex].textContent.trim();
+        const bValue = b.children[columnIndex].textContent.trim();
+
+        if (columnIndex === 3) { // Date column
+            return sortAscending ? 
+                new Date(aValue) - new Date(bValue) :
+                new Date(bValue) - new Date(aValue);
+        } else {
+            return sortAscending ?
+                aValue.localeCompare(bValue) :
+                bValue.localeCompare(aValue);
+        }
+    });
+
+    // Reorder table rows
+    rows.forEach(row => table.appendChild(row));
+}
+
+// Initialize search on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Trigger initial filter to ensure proper state
+    filterBooks();
+});
+</script>
 
 {% endblock %}

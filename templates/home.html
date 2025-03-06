@@ -1,154 +1,293 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- Single Dropdown Filter Section -->
-<div class="search-section mb-4">
-    <div class="row align-items-center">
-        <div class="col-md-4">
-            <div class="search-box">
-                <input type="text" class="form-control" placeholder="Search books, authors, or ISBN...">
-                <i class="fas fa-search search-icon"></i>
+<div class="container">
+    <!-- Search Bar -->
+    <div class="row mb-4">
+        <div class="col-md-6">
+            <div class="input-group">
+                <input type="text" id="searchInput" class="form-control" placeholder="Search books...">
+                <button class="btn btn-primary">
+                    <i class="fas fa-search"></i>
+                </button>
             </div>
         </div>
-        <div class="col-md-4">
-            <div class="dropdown filter-dropdown">
-                <button class="btn btn-outline-primary dropdown-toggle w-100" type="button" data-bs-toggle="dropdown">
-                    <i class="fas fa-filter me-2"></i>Filter Books
+        <div class="col-md-6">
+            <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="filterBooks" data-bs-toggle="dropdown">
+                    Filter Books
                 </button>
-                <div class="dropdown-menu">
-                    <div class="p-3">
-                        <h6 class="mb-3">Filter Options</h6>
-                        <div class="mb-3">
-                            <label class="form-label">Category</label>
-                            <select class="form-select">
-                                <option value="">All Categories</option>
-                                <option>Fiction</option>
-                                <option>Non-Fiction</option>
-                                <option>Academic</option>
-                                <option>Children's Books</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Genre</label>
-                            <select class="form-select">
-                                <option value="">All Genres</option>
-                                <option>Mystery</option>
-                                <option>Romance</option>
-                                <option>Sci-Fi</option>
-                                <option>Fantasy</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Language</label>
-                            <select class="form-select">
-                                <option value="">All Languages</option>
-                                <option>English</option>
-                                <option>Hindi</option>
-                                <option>Tamil</option>
-                                <option>Telugu</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Reading Level</label>
-                            <select class="form-select">
-                                <option value="">All Levels</option>
-                                <option>Beginner</option>
-                                <option>Intermediate</option>
-                                <option>Advanced</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Rating</label>
-                            <select class="form-select">
-                                <option value="">Any Rating</option>
-                                <option>4.5 & Above</option>
-                                <option>4.0 & Above</option>
-                                <option>3.5 & Above</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Format</label>
-                            <select class="form-select">
-                                <option value="">All Formats</option>
-                                <option>eBook</option>
-                                <option>PDF</option>
-                                <option>Audio Book</option>
-                            </select>
-                        </div>
-                        <div class="d-flex justify-content-between mt-4">
-                            <button class="btn btn-secondary" type="button">Reset</button>
-                            <button class="btn btn-primary" type="button">Apply Filters</button>
+                <ul class="dropdown-menu">
+                    <li><h6 class="dropdown-header">Genre</h6></li>
+                    <li><a class="dropdown-item" href="#" data-filter="genre" data-value="all">All Genres</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="genre" data-value="Programming">Programming</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="genre" data-value="Computer Science">Computer Science</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="genre" data-value="Web Development">Web Development</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="genre" data-value="Database">Database</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="genre" data-value="Artificial Intelligence">AI & ML</a></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    
+                    <li><h6 class="dropdown-header">Rating</h6></li>
+                    <li><a class="dropdown-item" href="#" data-filter="rating" data-value="all">All Ratings</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="rating" data-value="5">5 Stars</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="rating" data-value="4">4+ Stars</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="rating" data-value="3">3+ Stars</a></li>
+                    <li><div class="dropdown-divider"></div></li>
+                    
+                    <li><h6 class="dropdown-header">Language</h6></li>
+                    <li><a class="dropdown-item" href="#" data-filter="language" data-value="all">All Languages</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="language" data-value="en">English</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="language" data-value="hi">Hindi</a></li>
+                    <li><a class="dropdown-item" href="#" data-filter="language" data-value="mr">Marathi</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Categories -->
+    <div id="regularContent">
+        <!-- Best Sellers Section -->
+        <h3>Best Sellers</h3>
+        <div class="row mb-4">
+            {% for book in books if book.rating >= 4.7 %}
+            <div class="col-md-3 mb-4 book-card" 
+                 data-title="{{ book.title }}" 
+                 data-author="{{ book.author }}" 
+                 data-genre="{{ book.genre }}"
+                 data-rating="{{ book.rating }}"
+                 data-language="{{ book.language }}">
+                <div class="card">
+                    <div class="trending-badge">Best Seller</div>
+                    <img src="{{ url_for('static', filename=book.cover_image) }}" class="card-img-top" alt="{{ book.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text">{{ book.author }}</p>
+                        <span class="badge bg-primary">{{ book.genre }}</span>
+                        <div class="rating">
+                            <span class="stars">★</span> {{ book.rating }}
                         </div>
                     </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
+
+        <!-- New Releases Section -->
+        <h3>New Releases</h3>
+        <div class="row mb-4">
+            {% for book in books if book.added_date >= '2024-02-15' %}
+            <div class="col-md-3 mb-4 book-card" 
+                 data-title="{{ book.title }}" 
+                 data-author="{{ book.author }}" 
+                 data-genre="{{ book.genre }}"
+                 data-rating="{{ book.rating }}">
+                <div class="card">
+                    <div class="trending-badge">New</div>
+                    <img src="{{ url_for('static', filename=book.cover_image) }}" class="card-img-top" alt="{{ book.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text">{{ book.author }}</p>
+                        <span class="badge bg-primary">{{ book.genre }}</span>
+                        <div class="rating">
+                            <span class="stars">★</span> {{ book.rating }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Most Read Section -->
+        <h3>Most Read</h3>
+        <div class="row mb-4">
+            {% for book in books if book.reads >= 120 %}
+            <div class="col-md-3 mb-4 book-card" 
+                 data-title="{{ book.title }}" 
+                 data-author="{{ book.author }}" 
+                 data-genre="{{ book.genre }}"
+                 data-rating="{{ book.rating }}">
+                <div class="card">
+                    <div class="trending-badge">Popular</div>
+                    <img src="{{ url_for('static', filename=book.cover_image) }}" class="card-img-top" alt="{{ book.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text">{{ book.author }}</p>
+                        <span class="badge bg-primary">{{ book.genre }}</span>
+                        <div class="rating">
+                            <span class="stars">★</span> {{ book.rating }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Editor's Choice Section -->
+        <h3>Editor's Choice</h3>
+        <div class="row mb-4">
+            {% for book in books if book.rating >= 4.5 and book.reads >= 150 %}
+            <div class="col-md-3 mb-4 book-card" 
+                 data-title="{{ book.title }}" 
+                 data-author="{{ book.author }}" 
+                 data-genre="{{ book.genre }}"
+                 data-rating="{{ book.rating }}">
+                <div class="card">
+                    <div class="trending-badge">Editor's Pick</div>
+                    <img src="{{ url_for('static', filename=book.cover_image) }}" class="card-img-top" alt="{{ book.title }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ book.title }}</h5>
+                        <p class="card-text">{{ book.author }}</p>
+                        <span class="badge bg-primary">{{ book.genre }}</span>
+                        <div class="rating">
+                            <span class="stars">★</span> {{ book.rating }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- No Results Message -->
+    <div id="noResults" class="text-center py-5 d-none">
+        <h3>No books found</h3>
+        <p>Try adjusting your search criteria</p>
     </div>
 </div>
 
-<!-- Popular Categories Section -->
-<section class="mb-5">
-    <h2 class="section-title">Popular Categories</h2>
-    <div class="category-chips">
-        <a href="#" class="category-chip">Best Sellers</a>
-        <a href="#" class="category-chip">New Releases</a>
-        <a href="#" class="category-chip">Award Winners</a>
-        <a href="#" class="category-chip">Most Read</a>
-        <a href="#" class="category-chip">Editor's Choice</a>
-    </div>
-</section>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const bookCards = document.querySelectorAll('.book-card');
+    const noResults = document.getElementById('noResults');
+    const regularContent = document.getElementById('regularContent');
+    
+    // Filter state
+    let currentFilters = {
+        genre: 'all',
+        rating: 'all',
+        language: 'all'
+    };
 
-<!-- Trending Now Section -->
-<section class="mb-5">
-    <h2 class="section-title">Trending Now</h2>
-    <div class="books-grid">
-        {% for book in books[:4] %}
-        <div class="book-card">
-            <div class="book-badge">Trending</div>
-            <img src="{{ book.image }}" alt="{{ book.title }}">
-            <h3>{{ book.title }}</h3>
-            <p class="author">{{ book.author }}</p>
-            <div class="book-meta">
-                <span class="badge bg-primary">{{ book.genre }}</span>
-                <span class="rating">
-                    <i class="fas fa-star"></i> 4.5
-                </span>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</section>
+    // Add click handlers for filter dropdowns
+    document.querySelectorAll('.dropdown-item').forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault();
+            const filterType = this.dataset.filter;
+            const filterValue = this.dataset.value;
+            
+            // Update current filters
+            currentFilters[filterType] = filterValue;
+            
+            // Apply filters
+            filterBooks();
+        });
+    });
 
-<!-- Popular Authors Section -->
-<section class="mb-5">
-    <h2 class="section-title">Popular Authors</h2>
-    <div class="authors-carousel">
-        {% for author in popular_authors %}
-        <div class="author-card">
-            <img src="{{ author.image }}" alt="{{ author.name }}" class="author-image">
-            <h4>{{ author.name }}</h4>
-            <p>{{ author.books_count }} Books</p>
-        </div>
-        {% endfor %}
-    </div>
-</section>
+    function filterBooks() {
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        let hasResults = false;
 
-<!-- Recently Added Section -->
-<section class="mb-5">
-    <h2 class="section-title">Recently Added</h2>
-    <div class="books-grid">
-        {% for book in recent_books %}
-        <div class="book-card">
-            <div class="book-badge new">New</div>
-            <img src="{{ book.image }}" alt="{{ book.title }}">
-            <h3>{{ book.title }}</h3>
-            <p class="author">{{ book.author }}</p>
-            <div class="book-meta">
-                <span class="badge bg-primary">{{ book.genre }}</span>
-                <span class="date">Added {{ book.added_date }}</span>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-</section>
+        if (searchTerm === '' && 
+            currentFilters.genre === 'all' && 
+            currentFilters.rating === 'all' && 
+            currentFilters.language === 'all') {
+            regularContent.style.display = 'block';
+            noResults.classList.add('d-none');
+            return;
+        }
+
+        bookCards.forEach(card => {
+            const title = card.dataset.title.toLowerCase();
+            const author = card.dataset.author.toLowerCase();
+            const genre = card.dataset.genre;
+            const rating = parseFloat(card.dataset.rating);
+            const language = card.dataset.language || 'en';
+
+            const matchesSearch = searchTerm === '' || 
+                                title.includes(searchTerm) || 
+                                author.includes(searchTerm) || 
+                                genre.toLowerCase().includes(searchTerm);
+
+            const matchesGenre = currentFilters.genre === 'all' || genre === currentFilters.genre;
+            const matchesRating = currentFilters.rating === 'all' || 
+                                (currentFilters.rating === '5' && rating === 5) ||
+                                (currentFilters.rating === '4' && rating >= 4) ||
+                                (currentFilters.rating === '3' && rating >= 3);
+            const matchesLanguage = currentFilters.language === 'all' || language === currentFilters.language;
+
+            if (matchesSearch && matchesGenre && matchesRating && matchesLanguage) {
+                card.style.display = '';
+                hasResults = true;
+            } else {
+                card.style.display = 'none';
+            }
+        });
+
+        noResults.classList.toggle('d-none', hasResults);
+    }
+
+    searchInput.addEventListener('input', filterBooks);
+});
+</script>
+
+<style>
+.card {
+    position: relative;
+    margin-bottom: 20px;
+    transition: transform 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.trending-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: #dc3545;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.stars {
+    color: #ffc107;
+}
+
+.rating {
+    margin-top: 10px;
+}
+
+h3 {
+    margin: 30px 0 20px 0;
+    color: #333;
+    font-weight: 600;
+}
+
+.dropdown-menu {
+    padding: 8px 0;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.dropdown-header {
+    font-weight: bold;
+    color: #333;
+    padding: 8px 16px;
+}
+
+.dropdown-divider {
+    margin: 8px 0;
+}
+</style>
 {% endblock %}
