@@ -202,14 +202,15 @@
                         <label class="form-label">Genre</label>
                         <select class="form-select" name="genre" required>
                             <option value="">Select Genre</option>
-                            <option>Fiction</option>
-                            <option>Non-Fiction</option>
-                            <option>Science Fiction</option>
-                            <option>Mystery</option>
-                            <option>Romance</option>
-                            <option>Thriller</option>
-                            <option>Horror</option>
-                            <option>Biography</option>
+                            <option>Programming</option>
+                            <option>Computer Science</option>
+                            <option>Web Development</option>
+                            <option>Database</option>
+                            <option>Artificial Intelligence</option>
+                            <option>Software Engineering</option>
+                            <option>Networking</option>
+                            <option>Security</option>
+                            <option>Cloud Technology</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -217,12 +218,9 @@
                         <textarea class="form-control" name="description" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">Book Cover</label>
-                        <input type="file" class="form-control" name="cover_image" accept="image/*" required>
-                    </div>
-                    <div class="mb-3">
                         <label class="form-label">Book File (PDF)</label>
                         <input type="file" class="form-control" name="book_file" accept=".pdf" required>
+                        <small class="text-muted">The cover will be automatically generated from the first page.</small>
                     </div>
                 </div>
                 <div class="modal-footer">
